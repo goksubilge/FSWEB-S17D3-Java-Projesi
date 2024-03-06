@@ -2,7 +2,10 @@ package com.wit.zoo.controller;
 
 import com.wit.zoo.entity.Gender;
 import com.wit.zoo.entity.Kangaroo;
+import com.wit.zoo.entity.Koala;
 import jakarta.annotation.PostConstruct;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,6 +24,16 @@ public class KangarooController {
         kangaroosMap.put(1, new Kangaroo(1,"Dragonite", 210, 2.21 ,Gender.MALE,false));
     }
 
+    // ResponseEntity örneği olarak:
+    @GetMapping("/hey")
+    public ResponseEntity<String> helloKangaroo(){
+        return new ResponseEntity<>("hello Kangaroo", HttpStatus.CREATED);
+    }
+    @GetMapping("/status")
+    public ResponseEntity<List<Kangaroo>> getAllStatusKangarooList(){
+        return new ResponseEntity<>(kangaroosMap.values().stream().toList(), HttpStatus.OK);
+    }
+    //
     @GetMapping("/")
     public List<Kangaroo> getAllKangarooList(){
         return kangaroosMap.values().stream().toList();

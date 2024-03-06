@@ -3,6 +3,8 @@ package com.wit.zoo.controller;
 import com.wit.zoo.entity.Gender;
 import com.wit.zoo.entity.Koala;
 import jakarta.annotation.PostConstruct;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -19,10 +21,21 @@ public class KoalaController {
         koalasMap.put(1,new Koala(1,"GigglyPuff", 210, Gender.FEMALE, 8));
     }
 
-     @GetMapping("/")
-    public List<Koala> getAllKoalaList(){
-        return koalasMap.values().stream().toList();
+    // ResponseEntity örneği olarak:
+     @GetMapping("/hi")
+    public ResponseEntity<String> helloKoala(){
+        return new ResponseEntity<>("hello Koala", HttpStatus.CREATED);
      }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<Koala>> getAllStatusKoalaList(){
+        return new ResponseEntity<>(koalasMap.values().stream().toList(), HttpStatus.OK);
+    }
+    //
+    @GetMapping("/")
+    public List<Koala> getAllKoalaList() {
+        return koalasMap.values().stream().toList();
+    }
 
      @GetMapping("/{id}")
     public Koala getIdKoala(@PathVariable int id){
