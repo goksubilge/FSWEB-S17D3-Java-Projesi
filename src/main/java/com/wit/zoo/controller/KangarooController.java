@@ -1,9 +1,7 @@
 package com.wit.zoo.controller;
 
-import com.wit.zoo.entity.Animal;
 import com.wit.zoo.entity.Gender;
 import com.wit.zoo.entity.Kangaroo;
-import com.wit.zoo.entity.Koala;
 import com.wit.zoo.exceptions.ZooValidation;
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
@@ -46,13 +44,14 @@ public class KangarooController {
         //TODO [Bilge] isValidCheck
         ZooValidation.isValidIdAnimal(id);
         // TODO [Bilge] checkKangarooExist;
-        ZooValidation.checkKangarooIdIsNotExist(kangaroosMap,id);
+        ZooValidation.checkKangarooIdExistence(kangaroosMap,id,false);
         return kangaroosMap.get(id);
     }
 
     @PostMapping("/")
     public Kangaroo saveKangaroo(@RequestBody Kangaroo kangaroo){
         //TODO [Bilge] checkKangarooExist;
+        ZooValidation.checkKangarooIdExistence(kangaroosMap, kangaroo.getId(), true);
         kangaroosMap.put(kangaroo.getId(),kangaroo);
         return kangaroo;
     }

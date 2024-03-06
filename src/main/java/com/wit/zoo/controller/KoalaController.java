@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @RestController  // Bu controllerdan bir instance yaratması için
 @RequestMapping("/koalas") // General Path
+
 public class KoalaController {
     Map<Integer, Koala> koalasMap;
 
@@ -43,13 +45,14 @@ public class KoalaController {
          //TODO [Bilge] isValidCheck
          ZooValidation.isValidIdAnimal(id);
          // TODO [Bilge] checkKoalaExist
-         ZooValidation.checkKoalaIdIsNotExist(koalasMap,id);
+         ZooValidation.checkKoalaIdExistence(koalasMap,id,false);
          return koalasMap.get(id);
      }
 
      @PostMapping("/")
     public Koala saveKoala(@RequestBody Koala koala){
         //TODO [Bilge] checkKoalaExist;
+         ZooValidation.checkKoalaIdExistence(koalasMap, koala.getId(), false);
          //TODO [Bilge] checkKoalaWeight;
         koalasMap.put(koala.getId(),koala);
         return koala;
