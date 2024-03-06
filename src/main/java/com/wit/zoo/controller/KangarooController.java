@@ -1,8 +1,10 @@
 package com.wit.zoo.controller;
 
+import com.wit.zoo.entity.Animal;
 import com.wit.zoo.entity.Gender;
 import com.wit.zoo.entity.Kangaroo;
 import com.wit.zoo.entity.Koala;
+import com.wit.zoo.exceptions.ZooValidation;
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,9 @@ public class KangarooController {
     @GetMapping("/{id}")
     public Kangaroo getIdKangaroo(@PathVariable int id){
         //TODO [Bilge] isValidCheck
+        ZooValidation.isValidIdAnimal(id);
         // TODO [Bilge] checkKangarooExist;
+        ZooValidation.checkKangarooIdIsNotExist(kangaroosMap,id);
         return kangaroosMap.get(id);
     }
 
