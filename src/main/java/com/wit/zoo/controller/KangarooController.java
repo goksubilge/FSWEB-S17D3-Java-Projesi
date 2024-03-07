@@ -41,34 +41,48 @@ public class KangarooController {
 
     @GetMapping("/{id}")
     public Kangaroo getIdKangaroo(@PathVariable int id){
-        //TODO [Bilge] isValidCheck
+        // isValidCheck
         ZooValidation.isValidIdAnimal(id);
-        // TODO [Bilge] checkKangarooExist;
+        // checkKangarooExist;
         ZooValidation.checkKangarooIdExistence(kangaroosMap,id,false);
         return kangaroosMap.get(id);
     }
 
     @PostMapping("/")
     public Kangaroo saveKangaroo(@RequestBody Kangaroo kangaroo){
-        //TODO [Bilge] checkKangarooExist;
+        // isValid check;
+        ZooValidation.isValidIdAnimal(kangaroo.getId());
+        // checkKangarooExist;
         ZooValidation.checkKangarooIdExistence(kangaroosMap, kangaroo.getId(), true);
+        // checkWeight;
+        ZooValidation.isAnimalWeightValid(kangaroo.getWeight());
         kangaroosMap.put(kangaroo.getId(),kangaroo);
         return kangaroo;
     }
 
     @PutMapping("/{id}")
     public Kangaroo putKangaroo(@PathVariable int id, @RequestBody Kangaroo kangaroo){
-        //TODO [Bilge] isValid check;
-        //TODO [Bilge] checkKangarooExist => send save;
+        // isValid check;
+        ZooValidation.isValidIdAnimal(id);
+        // checkWeight;
+        ZooValidation.isAnimalWeightValid(kangaroo.getWeight());
+        // checkKangarooExist(false) => send saveKangaroo;
         kangaroo.setId(id);
-        kangaroosMap.put(id,kangaroo);
-        return kangaroo;
+        if(kangaroosMap.containsKey(id)){
+            // kangaroo.setId(id); => hata düzeltmek için yukarı taşıdım. önce id 'yi setlemeli
+            kangaroosMap.put(id,kangaroo);
+            return kangaroo;
+        } else {
+            return saveKangaroo(kangaroo);
+        }
     }
 
     @DeleteMapping("/{id}")
     public Kangaroo deleteKangaroo(@PathVariable int id){
-        //TODO [Bilge] isValid check;
-        //TODO [Bilge] checkKangarooExist;
+        // isValid check;
+        ZooValidation.isValidIdAnimal(id);
+        // checkKangarooExist;
+        ZooValidation.checkKangarooIdExistence(kangaroosMap,id,false);
         Kangaroo deletedKangaroo = kangaroosMap.get(id);
         kangaroosMap.remove(id);
         return deletedKangaroo;

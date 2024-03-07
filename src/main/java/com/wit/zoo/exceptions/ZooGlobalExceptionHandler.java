@@ -21,6 +21,7 @@ public class ZooGlobalExceptionHandler {
     public ResponseEntity<ZooErrorResponse> handException(Exception exception){
         ZooErrorResponse errResp = new ZooErrorResponse(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), System.currentTimeMillis());
 
+        log.error(exception.getMessage());
         return new ResponseEntity<>(errResp, HttpStatus.BAD_REQUEST);
     }
 }

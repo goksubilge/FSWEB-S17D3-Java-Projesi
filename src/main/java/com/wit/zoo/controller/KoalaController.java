@@ -42,37 +42,49 @@ public class KoalaController {
 
      @GetMapping("/{id}")
     public Koala getIdKoala(@PathVariable int id){
-         //TODO [Bilge] isValidCheck
+         // isValidCheck
          ZooValidation.isValidIdAnimal(id);
-         // TODO [Bilge] checkKoalaExist
+         // checkKoalaExist
          ZooValidation.checkKoalaIdExistence(koalasMap,id,false);
          return koalasMap.get(id);
      }
 
      @PostMapping("/")
     public Koala saveKoala(@RequestBody Koala koala){
-        //TODO [Bilge] checkKoalaExist;
-         ZooValidation.checkKoalaIdExistence(koalasMap, koala.getId(), false);
-         //TODO [Bilge] checkKoalaWeight;
+         // isValid check;
+         ZooValidation.isValidIdAnimal(koala.getId());
+        // checkKoalaExist;
+         ZooValidation.checkKoalaIdExistence(koalasMap, koala.getId(), true);
+         // checkWeight;
+         ZooValidation.isAnimalWeightValid(koala.getWeight());
         koalasMap.put(koala.getId(),koala);
         return koala;
      }
 
      @PutMapping("/{id}")
     public Koala putKoala(@PathVariable int id,@RequestBody Koala koala){
-         //TODO [Bilge] isValid check;
-         //TODO [Bilge] checkKoalaWeight;
-         //TODO [Bilge] checkKoala => send save;
+         // isValid check;
+         ZooValidation.isValidIdAnimal(id);
+         // checkWeight;
+         ZooValidation.isAnimalWeightValid(koala.getWeight());
+         //  checkKoalaExistence(false) => send saveKoala;
          koala.setId(id);
-         koalasMap.put(id,koala);
-         return koala;
+         if(koalasMap.containsKey(id)){
+             // koala.setId(id); => hata düzeltmek için yukarı taşıdım. önce id 'yi setlemeli
+             koalasMap.put(id,koala);
+             return koala;
+         } else {
+             return saveKoala(koala);
+         }
      }
 
      @DeleteMapping("/{id}")
     public Koala deleteKoala(@PathVariable int id){
-        // TODO [Bilge] isValid check;
-         // TODO [Bilge] checkKoalaExist;
-        Koala deletedKoala = koalasMap.get(id);
+        // isValid check;
+         ZooValidation.isValidIdAnimal(id);
+         // checkKoalaExist;
+         ZooValidation.checkKoalaIdExistence(koalasMap,id,false);
+         Koala deletedKoala = koalasMap.get(id);
         koalasMap.remove(id);
         return deletedKoala;
      }
